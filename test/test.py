@@ -5,7 +5,7 @@ class TestEnvironnement(unittest.TestCase):
         self.assertTrue(True)
 
     def testfailure(self):
-        self.assertTrue(False)
+        self.assertFalse(True)
 
 if __name__ == "__main__":
     unittest.main()
