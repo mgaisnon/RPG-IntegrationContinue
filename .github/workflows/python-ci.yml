@@ -85,8 +85,18 @@ jobs:
         run: |
           git checkout -b failure-${{ steps.commit.outputs.sha }}
           git push origin failure-${{ steps.commit.outputs.sha }}
-
+          
+      - name: Check if workflow file was changed
+        id: check_workflow
+        run: |
+          if git show --name-only | grep -q "^.github/workflows/"; then
+            echo "workflow_modified=true" >> $GITHUB_OUTPUT
+          else
+            echo "workflow_modified=false" >> $GITHUB_OUTPUT
+          fi
+          
       - name: Revert last commit on develop
+        if: steps.check_workflow.outputs.workflow_modified == 'false'
         run: |
           git checkout develop
           git revert --no-edit ${{ steps.commit.outputs.sha }}
