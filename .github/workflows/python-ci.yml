@@ -33,7 +33,7 @@ jobs:
 
       - name : Run tests
         run : |
-          python test.py
+          python test/test.py
 
       - name: Lint with flake8
         run: |
