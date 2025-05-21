@@ -42,7 +42,7 @@ jobs:
 
   handle-failure:
     needs: build
-    if: failure() && github.ref == 'refs/heads/develop'
+    if: needs.build.result == 'failure' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
 
     steps:
