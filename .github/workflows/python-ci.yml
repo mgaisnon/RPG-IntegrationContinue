@@ -6,12 +6,12 @@ on:
       - develop
 
 permissions:
-  contents: write  # Nécessaire pour push/revert
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    continue-on-error: true  # Permet de continuer vers le job suivant même en cas d'erreur
+    continue-on-error: true 
 
     steps:
       - name: Checkout code
@@ -31,6 +31,10 @@ jobs:
         run: |
           python main.py
 
+      - name : Run tests
+        run : |
+          python test.py
+
       - name: Lint with flake8
         run: |
           pip install flake8
@@ -45,7 +49,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Nécessaire pour revert et push proprement
+          fetch-depth: 0
 
       - name: Set up Git identity
         run: |
