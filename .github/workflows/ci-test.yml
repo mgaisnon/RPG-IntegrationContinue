@@ -1,4 +1,4 @@
-name: CI Générique Jeu Python
+name: CI Intégration Continue - Jeu Python
 
 on:
   push:
@@ -13,80 +13,81 @@ permissions:
   pull-requests: write
 
 jobs:
-  build-and-test:
+  tests:
+    name: 🔍 Tests & Lint
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout du code
+      - name: 🛎️ Checkout du code
         uses: actions/checkout@v3
 
-      - name: Configurer Python
+      - name: ⚙️ Configuration Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: Installer les dépendances
+      - name: 📦 Installer les dépendances
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Lancer le jeu
+      - name: 🕹️ Exécuter le jeu
         run: python main.py
 
-      - name: Lancer les tests
+      - name: 🧪 Lancer les tests
         run: python test/test.py
 
-      - name: Lint avec flake8
+      - name: 🧹 Lint avec flake8
         run: |
           pip install flake8
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
   create-failure-branch:
-    needs: build-and-test
+    name: 🚨 Créer une branche failure/<sha> si échec
+    needs: tests
     if: failure() && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout complet
+      - name: 🛎️ Checkout complet
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Configurer Git
+      - name: 🧾 Configurer Git
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-      - name: Obtenir le SHA du commit
+      - name: 🔐 Obtenir le SHA du commit
         id: sha
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
-      - name: Créer et pousser la branche failure/<sha>
+      - name: 🌱 Créer la branche failure/${{ steps.sha.outputs.sha }}
         run: |
           git checkout -b failure/${{ steps.sha.outputs.sha }}
           git push origin failure/${{ steps.sha.outputs.sha }}
-  create-pr-to-main:
-    needs: build-and-test
+
+  merge-develop-to-main:
+    name: 🚀 Merge automatique develop → main
+    needs: tests
     if: github.ref == 'refs/heads/develop' && success()
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
 
-      - name: Configurer Git
+    steps:
+      - name: 🛎️ Checkout complet
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: 🧾 Configurer Git
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-      - name: Créer une branche temporaire
+      - name: 🔀 Merger develop → main
         run: |
-          git checkout -b auto-pr-${{ github.run_id }}
-          git push origin auto-pr-${{ github.run_id }}
-
-      - name: Créer la PR
-        uses: peter-evans/create-pull-request@v5
-        with:
-          base: main
-          branch: auto-pr-${{ github.run_id }}
-          title: "PR automatique depuis develop"
-          body: |
-            PR générée automatiquement à partir des modifications sur develop.
-
+          git fetch origin main
+          git checkout main
+          git merge origin/develop --no-ff -m "Merge automatique de develop vers main via CI"
+          git push origin main
