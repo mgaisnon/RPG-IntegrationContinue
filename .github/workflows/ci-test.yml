@@ -65,22 +65,23 @@ jobs:
           git push origin failure/${{ steps.sha.outputs.sha }}
 
   create-pr-to-main:
-    if: github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      needs: build-and-test
+      if: github.ref == 'refs/heads/develop' && success()
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
 
-      - name: Configurer Git
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+        - name: Configurer Git
+          run: |
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
 
-      - name: Créer la PR develop → main
-        uses: peter-evans/create-pull-request@v5
-        with:
-          base: main
-          branch: develop
-          title: "PR automatique de develop vers main"
-          body: |
-            Cette pull request a été automatiquement générée après un push sur develop.
+        - name: Créer la PR develop → main
+          uses: peter-evans/create-pull-request@v5
+          with:
+            base: main
+            branch: develop
+            title: "PR automatique de develop vers main"
+            body: |
+                Cette pull request a été automatiquement générée après un push sur develop.
