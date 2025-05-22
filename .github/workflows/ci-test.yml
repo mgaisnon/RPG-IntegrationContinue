@@ -66,7 +66,7 @@ jobs:
 
       - name: 🧠 Analyse statique avec Pylint
         run: |
-          pylint $(find . -name "*.py" -not -path "./venv/*")
+          pylint $(find . -name "*.py" -not -path "./venv/*") --fail-under=8.0
 
       - name: 🧪 Vérification des types avec MyPy
         run: |
