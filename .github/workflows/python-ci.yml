@@ -83,8 +83,8 @@ jobs:
 
       - name: Create failure branch and push
         run: |
-          git checkout -b failure-${{ steps.commit.outputs.sha }}
-          git push origin failure-${{ steps.commit.outputs.sha }}
+          git checkout -b failure/${{ steps.commit.outputs.sha }}
+          git push origin failure/${{ steps.commit.outputs.sha }}
           
       - name: Check if workflow file was changed
         id: check_workflow
