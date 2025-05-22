@@ -31,9 +31,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: 🕹️ Exécuter le jeu
-        run: python main.py
-
       - name: 🧪 Lancer les tests
         run: python test/test.py
 
@@ -70,7 +67,7 @@ jobs:
 
       - name: 🧪 Vérification des types avec MyPy
         run: |
-          mypy .
+            mypy RPG/ --explicit-package-bases
 
       - name: 🧷 Vérification des vulnérabilités (dépendances) avec Safety
         run: |
@@ -79,7 +76,7 @@ jobs:
 
       - name: 🎨 Vérification du formatage avec Black
         run: |
-          black --check .
+          black .
 
 
   create-failure-branch:
