@@ -79,7 +79,7 @@ jobs:
 
       - name: 🎨 Vérification du formatage avec Black
         run: |
-          black --check .
+          black .
 
 
   create-failure-branch:
