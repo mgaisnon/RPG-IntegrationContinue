@@ -1,0 +1,86 @@
+name: CI Générique Jeu Python
+
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v3
+
+      - name: Configurer Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Lancer le jeu
+        run: python main.py
+
+      - name: Lancer les tests
+        run: python test/test.py
+
+      - name: Lint avec flake8
+        run: |
+          pip install flake8
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+  create-failure-branch:
+    needs: build-and-test
+    if: failure() && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout complet
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Configurer Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Obtenir le SHA du commit
+        id: sha
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Créer et pousser la branche failure/<sha>
+        run: |
+          git checkout -b failure/${{ steps.sha.outputs.sha }}
+          git push origin failure/${{ steps.sha.outputs.sha }}
+
+  create-pr-to-main:
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configurer Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Créer la PR develop → main
+        uses: peter-evans/create-pull-request@v5
+        with:
+          base: main
+          branch: develop
+          title: "PR automatique de develop vers main"
+          body: |
+            Cette pull request a été automatiquement générée après un push sur develop.
