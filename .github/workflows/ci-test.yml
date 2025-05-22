@@ -31,9 +31,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: 🕹️ Exécuter le jeu
-        run: python main.py
-
       - name: 🧪 Lancer les tests
         run: python test/test.py
 
