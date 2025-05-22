@@ -20,3 +20,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+"""Point d'entrée du jeu RPG."""
+
+print("Salam World !")

@@ -1,11 +1,14 @@
-import unittest
+"""Module de test."""
+
 import sys
 import os
-from RPG.joueur import Joueur
+import unittest
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from RPG.joueur import Joueur
 
 class TestEnvironnement(unittest.TestCase):
     def test_attaque_joueur(self):
+        """Teste si l'attaque retourne la bonne valeur (exemple)."""
         j1 = Joueur("Maa")
         j2 = Joueur("Matheuz")
 
