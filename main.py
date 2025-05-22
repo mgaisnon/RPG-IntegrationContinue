@@ -1,5 +1,6 @@
 from RPG.joueur import Joueur
 
+"""Point d'entrée du jeu RPG."""
 def main():
     joueur1 =  Joueur("Yassin le Mastermind")
     joueur2 = Joueur("Mathieu le Lobotomisateur")
@@ -20,3 +21,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+print("Salam World !")
