@@ -3,8 +3,8 @@
 import sys
 import os
 import unittest
-from RPG.joueur import Joueur
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from RPG.joueur import Joueur
 
 class TestEnvironnement(unittest.TestCase):
     def test_attaque_joueur(self):
