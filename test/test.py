@@ -1,9 +1,8 @@
+import unittest
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-import unittest
 from RPG.joueur import Joueur
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 class TestEnvironnement(unittest.TestCase):
     def test_attaque_joueur(self):
