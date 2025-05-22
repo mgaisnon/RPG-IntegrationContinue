@@ -70,7 +70,7 @@ jobs:
 
       - name: 🧪 Vérification des types avec MyPy
         run: |
-          mypy .
+            mypy RPG/ --explicit-package-bases
 
       - name: 🧷 Vérification des vulnérabilités (dépendances) avec Safety
         run: |
