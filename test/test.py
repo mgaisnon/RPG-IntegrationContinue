@@ -42,6 +42,15 @@ class TestEnvironnement(unittest.TestCase):
 
         self.assertEqual(j2.vie, 0)
 
+    @patch('builtins.input', return_value='')
+    def test_attaque_personnalisee(self, _):
+        j1 = Joueur("Maa")
+        j2 = Joueur("Matheuz")
+
+        j1.tour(j2, dommage=3)
+
+        self.assertEqual(j2.vie, 7)
+
 
 if __name__ == "__main__":
     unittest.main()
