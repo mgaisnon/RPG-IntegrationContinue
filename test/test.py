@@ -32,6 +32,16 @@ class TestEnvironnement(unittest.TestCase):
 
         self.assertTrue(j2.est_mort())
 
+    @patch('builtins.input', return_value='')  # Mock l'entrée utilisateur
+    def test_vie_ne_descend_pas_sous_zero(self, _):
+        j1 = Joueur("Maa")
+        j2 = Joueur("Matheuz")
+
+        for _ in range(15):
+            j1.tour(j2)
+
+        self.assertEqual(j2.vie, 0)
+
 
 if __name__ == "__main__":
     unittest.main()
