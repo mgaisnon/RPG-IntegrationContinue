@@ -51,6 +51,19 @@ class TestEnvironnement(unittest.TestCase):
 
         self.assertEqual(j2.vie, 7)
 
+    @patch('builtins.input', return_value='')
+    def test_pas_attaque_si_mort(self, _):
+        j1 = Joueur("Maa")
+        j2 = Joueur("Matheuz")
+
+        for _ in range(10):
+            j1.tour(j2)  # j2 est mort ici
+
+        vie_avant = j2.vie
+        j1.tour(j2)  # attaque après mort
+
+        self.assertEqual(j2.vie, vie_avant)
+
 
 if __name__ == "__main__":
     unittest.main()
