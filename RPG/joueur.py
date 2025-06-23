@@ -13,6 +13,10 @@ class Joueur:
         if self.vie <=0:
             print(f"{self.nom} est mort")
 
+    def est_mort(self):
+        """Retourne True si le joueur est mort."""
+        return self.vie <= 0
+
     def tour(self, cible):
         """Logique de bataille entre les joueurs."""
         print(f"\n🎮 {self.nom} joue son tour !")
