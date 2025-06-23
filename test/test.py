@@ -21,13 +21,16 @@ class TestEnvironnement(unittest.TestCase):
         j1.tour(j2)
 
         self.assertEqual(j2.vie,9)
-        
-    # def test_fail_attaque_joueur2(self):
-    #     j1 = Joueur("Maa")
-    #     j2 = Joueur("Matheuz")
 
-    #     j1.tour(j2)
-    #     assert j2.vie == 10
+    @patch('builtins.input', return_value='')  # Mock l'entrée utilisateur
+    def test_est_mort_apres_10_attaques(self, _):
+        j1 = Joueur("Maa")
+        j2 = Joueur("Matheuz")
+
+        for _ in range(10):
+            j1.tour(j2)
+
+        self.assertTrue(j2.est_mort())
 
 
 if __name__ == "__main__":
