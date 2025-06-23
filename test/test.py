@@ -97,5 +97,15 @@ class TestEnvironnement(unittest.TestCase):
         j1.tour(j2, dommage=0)
         self.assertEqual(j2.vie, 10)
 
+    @patch('builtins.input', return_value='')
+    def test_dommages_cumulatifs(self, _):
+        j1 = Joueur("A")
+        j2 = Joueur("B")
+
+        j1.tour(j2, dommage=2)
+        j1.tour(j2, dommage=3)
+
+        self.assertEqual(j2.vie, 5)
+
 if __name__ == "__main__":
     unittest.main()
