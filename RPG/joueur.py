@@ -8,9 +8,9 @@ class Joueur:
 
     def attaque(self, dommage=1):
         """Logique d'attaque du joueur."""
-        self.vie -= dommage
+        self.vie = max(0, self.vie - dommage)
         print(f"{self.nom} perd {dommage} point(s) de vie (PV restant: {self.vie}).")
-        if self.vie <=0:
+        if self.vie <= 0:
             print(f"{self.nom} est mort")
 
     def est_mort(self):
