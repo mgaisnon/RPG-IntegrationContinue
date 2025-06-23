@@ -89,5 +89,13 @@ class TestEnvironnement(unittest.TestCase):
         j1.tour(j2)
         self.assertTrue(j2.est_mort())
 
+    @patch('builtins.input', return_value='')
+    def test_attaque_nulle(self, _):
+        j1 = Joueur("Mathieu")
+        j2 = Joueur("Yassin")
+
+        j1.tour(j2, dommage=0)
+        self.assertEqual(j2.vie, 10)
+
 if __name__ == "__main__":
     unittest.main()
