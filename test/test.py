@@ -73,6 +73,10 @@ class TestEnvironnement(unittest.TestCase):
 
         self.assertEqual(j2.vie, 10)  # aucun dégât infligé
 
+    def test_joueur_est_vivant(self):
+        j = Joueur("Vivi")
+        self.assertFalse(j.est_mort())
+
 
 if __name__ == "__main__":
     unittest.main()
