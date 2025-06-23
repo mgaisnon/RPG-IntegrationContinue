@@ -8,6 +8,9 @@ class Joueur:
 
     def attaque(self, dommage=1):
         """Logique d'attaque du joueur."""
+        if dommage <= 0:
+            print(f"Attaque invalide ({dommage}). Aucun dégât infligé.")
+            return
         if self.est_mort():
             print(f"{self.nom} est déjà mort. Attaque ignorée.")
             return
@@ -15,7 +18,6 @@ class Joueur:
         print(f"{self.nom} perd {dommage} point(s) de vie (PV restant: {self.vie}).")
         if self.vie <= 0:
             print(f"{self.nom} est mort")
-
 
     def est_mort(self):
         """Retourne True si le joueur est mort."""

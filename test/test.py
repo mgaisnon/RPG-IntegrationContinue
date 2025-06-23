@@ -64,6 +64,15 @@ class TestEnvironnement(unittest.TestCase):
 
         self.assertEqual(j2.vie, vie_avant)
 
+    @patch('builtins.input', return_value='')
+    def test_attaque_invalide_dommage_negatif(self, _):
+        j1 = Joueur("Maa")
+        j2 = Joueur("Matheuz")
+
+        j1.tour(j2, dommage=-3)
+
+        self.assertEqual(j2.vie, 10)  # aucun dégât infligé
+
 
 if __name__ == "__main__":
     unittest.main()
