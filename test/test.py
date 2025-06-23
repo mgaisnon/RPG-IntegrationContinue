@@ -77,6 +77,17 @@ class TestEnvironnement(unittest.TestCase):
         j = Joueur("Vivi")
         self.assertFalse(j.est_mort())
 
+    @patch('builtins.input', return_value='')
+    def test_mort_exactement_apres_10(self, _):
+        j1 = Joueur("Mathieu")
+        j2 = Joueur("Yassin")
+
+        for _ in range(9):
+            j1.tour(j2)
+        self.assertFalse(j2.est_mort())
+
+        j1.tour(j2)
+        self.assertTrue(j2.est_mort())
 
 if __name__ == "__main__":
     unittest.main()
